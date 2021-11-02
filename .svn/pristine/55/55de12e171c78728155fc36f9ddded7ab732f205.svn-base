@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.MajorMapper">
+	<select id="subject" resultType="Major">
+		select * from major
+	</select>
+	<insert id="insert">
+		insert into major(mname,stunum,money,classtime) values(#{mname},#{stunum},#{money},#{classtime})
+	</insert>
+	<delete id="dele">
+		delete from major where id=#{id}
+	</delete>
+	<select id="updsel" resultType="Major">
+		select * from major where id=#{id}
+	</select>
+</mapper>

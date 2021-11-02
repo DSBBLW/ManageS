@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.costMapper">
+	<select id="select" resultType="cost">
+		select u.*,c.cname from cost u INNER JOIN classgrade c on u.classid=c.id where freename like #{name} limit #{index},10
+	</select>
+	<select id="hid" resultType="cost">
+		select u.*,c.cname from cost u INNER JOIN  classgrade c on u.classid=c.id where u.id=#{id} 
+	</select>
+	<select id="count" resultType="int">
+		select count(id) from cost where freename like #{name}
+	</select>
+	<delete id="del">
+		DELETE from cost where id=#{n}
+	</delete>
+	<update id="upd">
+	UPDATE cost set freename=#{freename},amount=#{amount},startdate=#{startdate},enddate=#{enddate},classid=(SELECT id from classgrade where cname=#{classs}) where id=#{id}
+	</update>
+</mapper>

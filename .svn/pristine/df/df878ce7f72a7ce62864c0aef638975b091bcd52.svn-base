@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.CourseMapper">
+	<select id="list" resultType="Course">
+	select distinct t.date,t.time,r.tname,c.cname,j.thname from course
+	INNER JOIN course as a,time as t,classgrade as c,classroom as r,teacher as j
+	where a.timeid=t.id and a.classid=c.id and a.roomid=r.id and a.thid=j.id and t.date=#{date};
+	</select>
+</mapper>

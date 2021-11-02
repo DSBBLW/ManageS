@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.TeacherMapper">
+	<select id="list" resultType="Teacher">
+		select * from teacher where thname like #{s} limit #{index},10
+	</select>
+	<select id="count" resultType="int">
+		select count(id) from teacher where thname like #{s}
+	</select>
+	<delete id="dele">
+		delete from teacher where id=#{id}
+	</delete>
+	<select id="updsel" resultType="Teacher">
+		select * from teacher where id =#{id}
+	</select>
+	
+	<update id="updat">
+		update teacher set post=#{post},money=#{money},major=#{major},phonenum=#{phonenum},address=#{address},email=#{email},introduction=#{introduction} where id = #{id}
+	</update>
+	<insert id="insert">
+		insert into teacher(thname,post,money,major,sex,phonenum,address,email,introduction,hiredate) values(#{thname},#{post},#{money},#{major},#{sex},#{phonenum},#{address},#{email},#{introduction},#{hiredate})
+	</insert>
+</mapper>

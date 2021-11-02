@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.EmailMapper">
+	<select id="seleEm" resultType="Email">
+		select c.headtext ,c.bool,e.inbox ,e.sendemail,e.love, e.createTime,e.emailid 
+		from content c 
+		INNER JOIN email e 
+		on e.emailid=c.id
+		where e.inbox= #{email} or e.public = 0
+		<if test="bool!=0">
+			<!-- 是否已读 -->
+			and c.bool=#{bool} 
+		</if>
+		<if test="love!=0">
+			and e.love=#{love}
+		</if>
+	</select>
+	<select id="seleEm2" resultType="Email">
+		select c.headtext ,c.bool,e.inbox ,e.sendemail,e.love, e.createTime,e.emailid 
+		from content c 
+		INNER JOIN email e 
+		on e.emailid=c.id
+		where e.inbox= #{email} or e.public = 1
+		<if test="bool!=0">
+			<!-- 是否已读 -->
+			and c.bool=#{bool} 
+		</if>
+		<if test="love!=0">
+			and e.love=#{love}
+		</if>
+	</select>
+	<insert id="addEmail1">
+		INSERT into email(sendemail,inbox,love) VALUES(#{sendemail},#{inbox},0);
+	</insert>
+	<insert id="addEmail2">
+		INSERT into content(headtext,text,bool) VALUES(#{headtext},#{text},0);
+	</insert>
+	<insert id="addEmail3">
+		INSERT into email(sendemail,love,public) VALUES('管理员',0,#{public});
+	</insert>
+	<!-- 判断收件人邮箱是否存在 -->
+	<select id="judge" resultType="Userstu">
+	<if test="type==1">
+		select * from userstu where email=#{email}
+	</if>
+	<if test="type==2">
+	select * from teacher where email=#{email}
+	</if>
+		
+	</select>
+	<!-- 收藏 -->
+	<update id="sc">
+	update email set love=1 where emailid=#{id}
+	</update>
+	<update id="bc">
+	update email set love=0 where emailid=#{id}
+	</update>
+	<!-- 批量删除 -->
+		<delete id="Recentdel">
+		DELETE from content where id in
+		<foreach collection="list" open="(" close=")" separator="," item="i" >
+		${i}
+		</foreach>
+		</delete>
+		<delete id="Recentdel1">
+		delete from email where emailid in
+		<foreach collection="list" open="(" close=")" separator="," item="i" >
+		${i}
+		</foreach>
+		</delete>
+	<!-- 是否已读 -->
+	<select id="readable" resultType="Email">
+		select * from content c 
+		INNER JOIN email e 
+		on e.emailid = c.id 
+		where c.bool = 0 and e.inbox =#{email}  or e.public = 0
+	</select>
+	<select id="readabless" resultType="Email">
+		select * from content c 
+		INNER JOIN email e 
+		on e.emailid = c.id 
+		where c.bool = 0 and e.inbox =#{email}  or e.public = 1
+	</select>
+	<update id="updaEmm">
+	 update content c  INNER JOIN email e 
+	on e.emailid = c.id set bool = 1 where e.inbox = #{email} 
+	</update>
+	<select id="seleEmaa" resultType="Email">
+		select c.headtext ,c.bool,e.inbox ,e.sendemail,e.love, e.createTime,e.emailid 
+		from content c 
+		INNER JOIN email e 
+		on e.emailid=c.id
+		where e.inbox= #{email}
+		or e.public = 0
+	</select>
+	<select id="readables" resultType="Email">
+		select * from content c 
+		INNER JOIN email e 
+		on e.emailid = c.id 
+		where  e.emailid=#{id}
+	</select>
+	<select id="readablesa" resultType="Email">
+		select * from content c 
+		INNER JOIN email e 
+		on e.emailid = c.id 
+		where  e.emailid=#{id}
+	</select>
+	
+	<update id="updaabool">
+		update content c INNER JOIN email e on c.id = e.emailid set c.bool = 1 where e.inbox=#{email}
+	</update>
+	<update id="updaalove">
+		update content c INNER JOIN email e on c.id = e.emailid set e.love = 1 where e.emailid
+		in
+		<foreach collection="list" open="(" close=")" separator="," item="i" >
+		${i}
+		</foreach>
+	</update>
+</mapper>

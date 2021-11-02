@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.ExamResultMapper">
+<!-- 所有考试成绩 -->
+	<select id="er" resultType="Examresult">
+		select e.*,ex.examname,u.sname,m.mname from examresult e
+		INNER JOIN exam ex
+		on e.examid=ex.id
+		INNER JOIN userstu u
+		on e.stuid=u.id
+		INNER JOIN major m
+		on e.mid = m.id
+		where examname like #{ex}
+		LIMIT #{index},10
+	</select>
+	<!-- 总条数 -->
+	<select id="cou" resultType="int">
+		select count(e.id) from examresult e
+		INNER JOIN exam ex
+		on e.examid=ex.id
+		INNER JOIN userstu u
+		on e.stuid=u.id
+		INNER JOIN major m
+		on e.mid = m.id
+		where examname like #{ex}
+	</select>
+	<!-- 查询所有考试类型 -->
+	<select id="exam" resultType="Exam">
+		select * from exam
+	</select>
+	<!-- 添加成绩 -->
+	<insert id="addexam">
+		INSERT into examresult(examid,compresult,paperesult,stuid,mid)
+		 VALUES(#{examid},#{compresult},#{paperesult},
+		 (select id from userstu where sname =#{sname}),#{mid})
+	</insert>
+	<select id="selus" resultType="Userstu">
+	select * from userstu where sname=#{sn}
+	</select> 
+</mapper>

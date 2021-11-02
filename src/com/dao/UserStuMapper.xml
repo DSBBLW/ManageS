@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.UserStuMapper">
+<!-- 查询所有班级 -->
+<select id="selgra" resultType="ClassGrade">
+select * from classgrade where cname=#{cn}
+</select>
+<!-- 查询所有省 -->
+<select id="selpro" resultType="Districts">
+	select * from districts where deep=0;
+</select>
+<!-- 根据省id查询所有市 -->
+<select id="selci" resultType="Districts">
+	select * from districts where deep=1 and pid=#{co};
+</select>
+<!-- 根据市id查询所有区 -->
+<select id="selqu"  resultType="Districts">
+select * from districts where deep=2  and pid=#{co};
+</select>
+<!-- 根据id查询省 -->
+<select id="selss" resultType="Districts">
+	select * from districts id=#{co}
+</select>
+
+<!-- 分页查询数据 -->
+	<select id="sel" resultMap="map1">
+		select u.*,c.cname,m.mname,CONCAT(d.ext_name,'-',di.ext_name,'-',dis.ext_name) as arean from userstu u
+		INNER JOIN classgrade c
+		on u.classid=c.id
+		INNER JOIN major m
+		on u.majorid=m.id
+		INNER JOIN districts d
+		on u.idp=d.id
+		INNER JOIN districts di
+		on u.idc=di.id
+		INNER JOIN districts dis
+		on u.idt=dis.id
+		where sname like #{name}
+		limit #{index},10
+	</select>
+	<resultMap type="Userstu" id="map1">
+	 <!-- 前面数据库，后面实体类 -->
+	<result column="cname" property="classs" />
+	<result column="mname" property="major" />
+	</resultMap>
+	<!-- 总条数 -->
+	 <select id="cou" resultType="int">
+		select count(u.id) as arean from userstu u
+		INNER JOIN classgrade c
+		on u.classid=c.id
+		INNER JOIN major m
+		on u.majorid=m.id
+		INNER JOIN districts d
+		on u.idp=d.id
+		INNER JOIN districts di
+		on u.idc=di.id
+		INNER JOIN districts dis
+		on u.idt=dis.id
+		where sname like #{name}
+	</select> 
+	<!-- 删除学生信息 -->
+	 <delete id="del">
+	DELETE from userstu where id=#{n}
+	</delete> 
+	<!-- 根据id获取信息 -->
+	 <select id="hid" resultMap="map2">
+		select u.*,c.cname,m.mname,CONCAT(d.ext_name,'-',di.ext_name,'-',dis.ext_name) as arean from userstu u
+		INNER JOIN classgrade c
+		on u.classid=c.id
+		INNER JOIN major m
+		on u.majorid=m.id
+		INNER JOIN districts d
+		on u.idp=d.id
+		INNER JOIN districts di
+		on u.idc=di.id
+		INNER JOIN districts dis
+		on u.idt=dis.id
+		where  u.id=#{id}
+	</select>
+	 <resultMap type="Userstu" id="map2">
+	 <!-- 前面数据库，后面实体类 -->
+	 <result column="cname" property="classs" />
+	<result column="mname" property="major" />
+	</resultMap> 
+	<!-- 修改学生信息 -->
+	 <update id="upd">
+	UPDATE userstu set sname=#{sname},bornDate=#{bornDate},
+	nativename=#{nativename},
+	classid=(SELECT id from classgrade where cname=#{classs}),
+	majorid=#{majorid},phonenum=#{phonenum},idp=#{idp},idc=#{idc},idt=#{idt},photo=#{photo}
+	 where id=#{id}
+	</update> 
+	<!-- 查询出所有专业 -->
+	 <select id="selzy" resultType="Major">
+		SELECT * from major
+	</select> 
+	<!-- 添加学生信息 -->
+	<insert id="add">
+	INSERT into userstu(sname,classid,bornDate,nativename,
+	 majorid,phonenum,sex,idp,idc,idt,photo)
+	 VALUES(#{sname},
+	 (SELECT id from classgrade where cname=#{classs}),
+	 #{bornDate},#{nativename},#{majorid},#{phonenum},
+	 #{sex},#{idp},#{idc},#{idt},#{photo})
+	</insert> 
+	<!-- 批量删除 -->
+	<!-- <delete id="dela">
+	delete from teacher where id in
+	<foreach collection="list" open="(" close=")" separator="," item="i" >
+		${i}
+	</foreach>
+	</delete> -->
+	<select id="hiaa" resultMap="map2">
+		select u.*,c.cname,m.mname,CONCAT(d.ext_name,'-',di.ext_name,'-',dis.ext_name) as arean from userstu u
+		INNER JOIN classgrade c
+		on u.classid=c.id
+		INNER JOIN major m
+		on u.majorid=m.id
+		INNER JOIN districts d
+		on u.idp=d.id
+		INNER JOIN districts di
+		on u.idc=di.id
+		INNER JOIN districts dis
+		on u.idt=dis.id
+		where  u.email=#{email}
+	</select>
+	<update id="updas">
+	UPDATE userstu set bornDate=#{bornDate},photo=#{photo}
+	 where sname=#{sname}
+	</update> 
+</mapper>

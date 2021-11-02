@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.ExamDataMapper">
+	<select id="sele" resultType="ExamData">
+	select e.*,ex.examname,c.cname from examdata e
+	INNER JOIN exam ex
+	on e.exid=ex.id
+	INNER JOIN classgrade c
+	on e.cid=c.id
+	where ex.examname like #{name}
+	limit #{index},10
+	</select>
+	<select id="count" resultType="int">
+	select count(e.id) from examdata e
+	INNER JOIN exam ex
+	on e.exid=ex.id
+	INNER JOIN classgrade c
+	on e.cid=c.id
+	where ex.examname like #{name}
+	</select>
+</mapper>

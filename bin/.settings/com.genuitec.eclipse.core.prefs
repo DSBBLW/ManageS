@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+validator.Checked=WebRoot/js/jquery.min.js,WebRoot/assets/plugins/fullcalendar/jquery.fullcalendar.js,WebRoot/assets/js/respond.min.js,WebRoot/assets/plugins/bootstrap/js/bootstrap.min.js,WebRoot/assets/plugins/apexchart/apexcharts.min.js,WebRoot/assets/plugins/select2/js/select2.min.js,WebRoot/js/moment-2.2.1.js,WebRoot/assets/js/jquery-ui.min.js,WebRoot/assets/plugins/fullcalendar/fullcalendar.min.js
+validator.Unchecked=

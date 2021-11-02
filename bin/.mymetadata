@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="ManageS"
+  id="myeclipse.1629789186729"
+  context-root="/ManageS"
+  j2ee-spec="5.0"
+  archive="ManageS.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
